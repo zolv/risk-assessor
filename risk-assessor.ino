@@ -219,7 +219,7 @@ void displayValue(int value) {
 }
 
 void displayDigit(int digit, int value) {
-  //turnOnSquare(-1);
+  turnOnSquare(-1);
   displayDigit(value);
   turnOnSquare(digit);
   delay(DigitDisplayDelay);
