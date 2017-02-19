@@ -1,24 +1,24 @@
-int input1 = A0;
-int input2 = A5;
-int input3 = A2;
-int input4 = A3;
-int input5 = A1;
-int input6 = A4;
+const int input1 = A0;
+const int input2 = A5;
+const int input3 = A2;
+const int input4 = A3;
+const int input5 = A1;
+const int input6 = A4;
 
-int displayA = 2;
-int displayB = 3;
-int displayC = 4;
-int displayD = 5;
-int displayE = 6;
-int displayF = 7;
-int displayG = 8;
+const int displayA = 2;
+const int displayB = 3;
+const int displayC = 4;
+const int displayD = 5;
+const int displayE = 6;
+const int displayF = 7;
+const int displayG = 8;
 
-int RPin = 9;
-int GPin = 10;
-int BPin = 11;
+const int RPin = 9;
+const int GPin = 10;
+const int BPin = 11;
 
-int digit1 = 12;
-int digit2 = 13;
+const int digit1 = 12;
+const int digit2 = 13;
 
 const int RiskExtremeValue = 56;
 const int RiskRedValue = 40;
@@ -26,10 +26,10 @@ const int RiskYellowValue = 20;
 
 const int DigitDisplayDelay = 5;
 
-int colorValueG = 60;
-int colorValueR = 96;//160;
+const int colorValueG = 60;
+const int colorValueR = 96;//160;
 
-const int blinkCount = 24;
+const int blinkCount = 16;
 int blinkingTime = blinkCount / 2;
 
 void setup() {
@@ -59,7 +59,7 @@ void setup() {
 
 void loop() {
 
-  int value = calculateRisk2();
+  const int value = calculateRisk2();
   if (value < RiskExtremeValue) {
     blinkingTime = blinkCount / 2;
     displayColour(value);
@@ -95,7 +95,7 @@ int calculateRisk2() {
 
   const int input2Value = analogRead(input2);
   int input2Scaled = map(constrain(input2Value, 0, 111), 0, 111, 1, 4);
-  int input2Risk = 5;
+  int input2Risk = 6;
   if (input2Value < 36) {
     input2Risk = 1;
   } else {
@@ -107,7 +107,7 @@ int calculateRisk2() {
   }
 
   const int input3Value = analogRead(input3);
-  int input3Risk = 0;
+  int input3Risk = 6;
 
   if (input3Value < 46) {
     input3Risk = 1;
@@ -152,8 +152,6 @@ int calculateRisk2() {
     }
   }
 
-
-
   const int input4Value = analogRead(input4);
   int input4Scaled = map(constrain(input4Value, 0, 111), 0, 111, 1, 5);
   int input4Risk = 6;
@@ -171,28 +169,12 @@ int calculateRisk2() {
     }
   }
 
-
   int input5Value = analogRead(input5);
   int input5Risk = input5Value < 100 ? 5 : 1;
 
   const int input6Value = analogRead(input6);
   int input6Scaled = map(constrain(input6Value, 0, 111), 0, 111, 1, 5);
   int input6Risk = 6;
-  switch (input6Scaled) {
-    case 1:
-      input6Risk = 1;
-      break;
-    case 2:
-      input6Risk = 4;
-      break;
-    case 3:
-      input6Risk = 7;
-      break;
-    case 4:
-    case 5:
-      input6Risk = 10;
-      break;
-  }
   if (input6Value < 25) {
     input6Risk = 1;
   } else {
@@ -230,17 +212,17 @@ int calculateRisk2() {
 }
 
 void displayValue(int value) {
-  const int decimal = value / 10;
-  displayDigit(decimal);
-  turnOnSquare(2);
-  delay(DigitDisplayDelay);
-
-  const int unit = value % 10;
-  displayDigit(unit);
-  turnOnSquare(1);
-  delay(DigitDisplayDelay);
+  displayDigit(2, value / 10);
+  displayDigit(1, value % 10);
 
   turnOnSquare(-1);
+}
+
+void displayDigit(int digit, int value) {
+  //turnOnSquare(-1);
+  displayDigit(value);
+  turnOnSquare(digit);
+  delay(DigitDisplayDelay);
 }
 
 void turnOnSquare(int num) {
@@ -263,17 +245,9 @@ void turnOnSquare(int num) {
   // Serial.print(digit1); Serial.print(" "); Serial.print(digit2); Serial.print(" ");
 }
 
-void displayDigit(int a, int b, int c, int d, int e, int f, int g) {
-  digitalWrite(displayA, a);
-  digitalWrite(displayB, b);
-  digitalWrite(displayC, c);
-  digitalWrite(displayD, d);
-  digitalWrite(displayE, e);
-  digitalWrite(displayF, f);
-  digitalWrite(displayG, g);
-}
-void displayDigit(byte num) {
-  switch (num % 9) {
+void displayDigit(int num) {
+  /* Modulo 10 just in case  */
+  switch (num % 10) {
     case 0:
       displayDigit(HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW);
       break;
@@ -306,6 +280,17 @@ void displayDigit(byte num) {
       break;
   }
 }
+
+void displayDigit(int a, int b, int c, int d, int e, int f, int g) {
+  digitalWrite(displayA, a);
+  digitalWrite(displayB, b);
+  digitalWrite(displayC, c);
+  digitalWrite(displayD, d);
+  digitalWrite(displayE, e);
+  digitalWrite(displayF, f);
+  digitalWrite(displayG, g);
+}
+
 void displayColour(const int value) {
 
   int r, g, b = 0;
@@ -353,6 +338,4 @@ void setRGBLed(int r, int g, int b) {
   analogWrite(GPin, g);
   analogWrite(BPin, b);
 }
-
-
 
