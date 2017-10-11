@@ -20,7 +20,7 @@ const int BPin = 11;
 const int digit1 = 12;
 const int digit2 = 13;
 
-const int RiskExtremeValue = 56;
+const int RiskExtremeValue = 60;
 const int RiskRedValue = 40;
 const int RiskYellowValue = 20;
 
@@ -175,16 +175,20 @@ int calculateRisk2() {
   const int input6Value = analogRead(input6);
   int input6Scaled = map(constrain(input6Value, 0, 111), 0, 111, 1, 5);
   int input6Risk = 6;
-  if (input6Value < 25) {
+  if (input6Value < 18) {
     input6Risk = 1;
   } else {
-    if (input6Value < 55) {
-      input6Risk = 4;
+    if (input6Value < 42) {
+      input6Risk = 3;
     } else {
-      if (input6Value < 84) {
-        input6Risk = 7;
+      if (input6Value < 67) {
+        input6Risk = 6;
       } else {
-        input6Risk = 10;
+        if (input6Value < 92) {
+          input6Risk = 10;
+        } else {
+          input6Risk = 15;
+        }
       }
     }
   }
@@ -196,7 +200,7 @@ int calculateRisk2() {
   //  Serial.print(" 3: ");Serial.print(min3);Serial.print( "-");Serial.print(input3Value);Serial.print( "-");Serial.print(max3);Serial.println();
   //  Serial.print(" 4: ");Serial.print(min4);Serial.print( "-");Serial.print(input4Value);Serial.print( "-");Serial.print(max4);Serial.println();
   //  Serial.print(" 5: ");Serial.print(min5);Serial.print( "-");Serial.print(input5Value);Serial.print( "-");Serial.print(max5);Serial.println();
-  //  Serial.print(" 6: ");Serial.print(min6);Serial.print( "-");Serial.print(input6Value);Serial.print( "-");Serial.print(max6);Serial.println();
+  //  Serial.print(" 6: ");Serial.print( "-");Serial.print(input6Value);Serial.print( "-");Serial.println();
   //  Serial.println();
 
   // Serial.print(input1Risk);Serial.print(input1Value);Serial.print( "+");
@@ -338,4 +342,5 @@ void setRGBLed(int r, int g, int b) {
   analogWrite(GPin, g);
   analogWrite(BPin, b);
 }
+
 
